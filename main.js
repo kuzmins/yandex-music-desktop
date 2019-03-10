@@ -1,15 +1,16 @@
 'use strict';
 
 const { app, BrowserWindow } = require('electron');
+const path = require("path");
 const { setup: setupPushReceiver } = require('electron-push-receiver');
 
-let win;
+let mainWindow;
 
 function createWindow () {
-    win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         title: 'Яндекс.Музыка',
         width: 1024,
-        height: 720,
+        height: 768,
         minWidth: 400,
         minHeight: 400,
         center: true,
@@ -17,18 +18,20 @@ function createWindow () {
         autoHideMenuBar: true,
         backgroundColor: '#000',
         webPreferences: {
-            webviewTag: true
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js')
         }
     });
-    win.loadFile('index.html');
-    win.once('ready-to-show', () => {
-        win.show();
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
     });
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
+    mainWindow.loadURL('https://music.yandex.ru');
     setupPushReceiver(win.webContents);
-    win.on('closed', () => {
-        win = null;
-    });
 }
+
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
