@@ -18,6 +18,10 @@
     "Music",
     "Player"
   ],
+  "build": {
+    "appId": "yandex.music.player",
+    "productName": "Yandex.Music"
+  },
   "author": "Sergey Kuzmin",
   "license": "ISC",
   "bugs": {
