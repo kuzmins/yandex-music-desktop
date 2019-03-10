@@ -11,14 +11,13 @@
         let ret;
 
         ret = globalShortcut.register('MediaPlayPause', () => {
-            webview.executeJavaScript('externalAPI.togglePause();');
-            // webview.executeJavaScript('externalAPI.isPlaying()', isPlaying => {
-            //     if (isPlaying) {
-            //         webview.executeJavaScript('externalAPI.togglePause();');
-            //     } else {
-            //         webview.executeJavaScript('externalAPI.play();');
-            //     }
-            // });
+            webview.executeJavaScript('externalAPI.isPlaying()', isPlaying => {
+                if (isPlaying) {
+                    webview.executeJavaScript('externalAPI.togglePause();');
+                } else {
+                    webview.executeJavaScript('externalAPI.play();');
+                }
+            });
         });
         if (!ret) {
             dialog.showErrorBox('Cant bind global shortcut', 'Cant bind MediaPlayPause. Closing tab.\nPossible second opened tab?');
