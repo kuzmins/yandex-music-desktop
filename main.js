@@ -29,7 +29,7 @@ function createWindow () {
         mainWindow = null;
     });
     mainWindow.loadURL('https://music.yandex.ru');
-    setupPushReceiver(win.webContents);
+    setupPushReceiver(mainWindow.webContents);
 }
 
 app.on('ready', createWindow);
@@ -39,7 +39,7 @@ app.on('window-all-closed', () => {
     }
 });
 app.on('activate', () => {
-    if (win === null) {
+    if (mainWindow === null) {
         createWindow();
     }
 });
