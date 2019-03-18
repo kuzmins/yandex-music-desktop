@@ -1,7 +1,9 @@
 'use strict';
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require("path");
+const baseUrl = "https://music.yandex.ru";
+const internalUrlRegex = "(?:music|passport)\.yandex\.ru/.*";
 
 let mainWindow;
 
@@ -32,7 +34,15 @@ app.on('ready', () => {
         }
     });
 
-    mainWindow.loadURL('https://music.yandex.ru');
+    mainWindow.webContents.on('will-navigate', (event, url) => {
+        if (url === 'about:blank' || RegExp(internalUrlRegex).test(url)) {
+            return;
+        }
+        event.preventDefault();
+        shell.openExternal(url);
+    });
+
+    mainWindow.loadURL(baseUrl);
 });
 
 app.on('before-quit', () => {
@@ -47,7 +57,7 @@ app.on('window-all-closed', () => {
     }
 });
 
-app.on('activate', (event, hasVisibleWindows) => {
+app.on('activate', (e, hasVisibleWindows) => {
     if (process.platform === 'darwin') {
         if (!hasVisibleWindows) {
             mainWindow.show();
