@@ -1,16 +1,16 @@
-'use strict';
-
-const electron = require('electron');
-const {ipcRenderer} = electron;
-window.ipcRenderer = ipcRenderer;
-
 (() => {
+    'use strict';
+
+    const electron = require('electron');
+    // const {ipcRenderer} = electron;
+    // window.ipcRenderer = ipcRenderer;
+
     const {remote} = electron;
-    const {globalShortcut, dialog} = remote;
     let currentWindow = remote.getCurrentWindow();
     let currentWebContents = currentWindow.webContents;
 
-    const init = () => {
+    currentWebContents.on('did-finish-load', () => {
+        const {globalShortcut, dialog} = remote;
         let ret;
 
         ret = globalShortcut.register('MediaPlayPause', () => {
@@ -42,7 +42,5 @@ window.ipcRenderer = ipcRenderer;
             dialog.showErrorBox('Cant bind global shortcut', 'Cant bind MediaNextTrack. Closing tab. \nPossible second opened tab?');
             currentWindow.close();
         }
-    };
-
-    currentWebContents.on('did-finish-load', init);
+    });
 })();

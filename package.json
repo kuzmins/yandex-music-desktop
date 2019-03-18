@@ -2,7 +2,7 @@
   "name": "yandex-music-desktop",
   "version": "1.0.0",
   "description": "A player for Yandex.Music, based on web",
-  "main": "main.js",
+  "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
@@ -32,7 +32,5 @@
     "electron": "^4.0.8",
     "electron-builder": "^20.38.5"
   },
-  "dependencies": {
-    "electron-push-receiver": "^2.1.2"
-  }
+  "dependencies": {}
 }
