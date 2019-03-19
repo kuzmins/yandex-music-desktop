@@ -1,9 +1,10 @@
 'use strict';
 
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, globalShortcut, dialog, shell } = require('electron');
 const path = require("path");
 const baseUrl = "https://music.yandex.ru";
 const internalUrlRegex = "(?:music|passport)\.yandex\.ru/.*";
+let playerCtrls = ['MediaPlayPause', 'MediaPreviousTrack', 'MediaNextTrack'];
 
 let mainWindow;
 
@@ -19,7 +20,7 @@ app.on('ready', () => {
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: false,
-            preload: path.join(__dirname, 'renderer.js')
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
@@ -32,6 +33,19 @@ app.on('ready', () => {
             e.preventDefault();
             mainWindow.hide();
         }
+    });
+
+    mainWindow.webContents.on('did-finish-load', () => {
+        playerCtrls.some(ctrl => {
+            let ret = globalShortcut.register(ctrl, () => {
+                mainWindow.webContents.send('player', ctrl);
+            });
+            if (!ret) {
+                dialog.showErrorBox('Cant bind global shortcut', `Cant bind ${ctrl}. Closing tab. \nPossible second opened tab?`);
+                mainWindow.close();
+                return true;
+            }
+        });
     });
 
     mainWindow.webContents.on('will-navigate', (event, url) => {
