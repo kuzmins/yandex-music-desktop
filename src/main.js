@@ -4,7 +4,7 @@ const { app, BrowserWindow, globalShortcut, dialog, shell } = require('electron'
 const path = require("path");
 const baseUrl = "https://music.yandex.ru";
 const internalUrlRegex = "(?:music|passport)\.yandex\.ru/.*";
-let playerCtrls = ['MediaPlayPause', 'MediaPreviousTrack', 'MediaNextTrack'];
+const playerCtrls = ['MediaPlayPause', 'MediaPreviousTrack', 'MediaNextTrack'];
 
 let mainWindow;
 
