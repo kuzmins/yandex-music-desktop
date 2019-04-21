@@ -1,4 +1,4 @@
-(() => {
+{
     'use strict';
 
     const currentWebContents = require('electron').remote.getCurrentWindow().webContents;
@@ -32,4 +32,4 @@
             });
         });
     });
-})();
+}

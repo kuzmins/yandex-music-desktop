@@ -1,4 +1,4 @@
-(() => {
+{
     'use strict';
 
     const path = require("path");
@@ -6,4 +6,4 @@
     window.ipcRenderer = ipcRenderer;
 
     require(path.join(__dirname, 'playerCtrls.js'));
-})();
+}
